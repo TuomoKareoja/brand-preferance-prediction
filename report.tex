@@ -1,0 +1,71 @@
+\documentclass[12pt,a4paper,leqno]{report}
+
+\usepackage[T1]{fontenc}
+\usepackage[english]{babel}
+\usepackage{amsthm}
+\usepackage{amsfonts}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{tikz}
+
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\C}{\mathbb{C}}
+\newcommand{\Q}{\mathbb{Q}}
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\No}{\mathbb{N}_0}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\diam}{\operatorname{diam}}
+
+\theoremstyle{plain}
+\newtheorem{equa}[equation]{Equation}
+\newtheorem{lem}[equation]{Lemma}
+\newtheorem{prop}[equation]{Proposition}
+\newtheorem{cor}[equation]{Corollary}
+
+\theoremstyle{definition}
+\newtheorem{defi}[equation]{definition}
+\newtheorem{conj}[equation]{Conjecture}
+\newtheorem{example}[equation]{Example}
+
+\theoremstyle{remark}
+\newtheorem{note}[equation]{Note}
+
+\pagestyle{plain}
+\makeatletter
+\renewcommand{\@seccntformat}[1]{}
+\makeatother
+\setcounter{page}{1}
+\addtolength{\hoffset}{-1.15cm}
+\addtolength{\textwidth}{2.3cm}
+\addtolength{\voffset}{0.45cm}
+\addtolength{\textheight}{-0.9cm}
+
+\graphicspath{ {./figures/} }
+
+\title{Data Analytics 2 - Predicting Brand Preference}
+\author{Tuomo Kareoja}
+\date{}
+
+\begin{document}
+
+\maketitle
+
+\begin{table}[h!]
+  \begin{center}
+    \begin{tabular}{l|c|r}
+      \textbf{Version Number} & \textbf{Changes} & \textbf{Date} \\
+      \hline
+      0.1 & Created basic outline without content & 01.08.2019\\
+    \end{tabular}
+  \end{center}
+\end{table}
+
+\newpage
+
+\section{Fixed predictions}
+
+\section{Model Comparison and Performance}
+
+\section{Chosen Model}
+
+\end{document}
