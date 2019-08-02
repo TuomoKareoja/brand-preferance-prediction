@@ -17,84 +17,108 @@ str(data_predict)
 summary(data_train)
 summary(data_predict)
 
-# we can see that all the predict data has all brand
-# values set as zero although these should be null
+# All values of categorical columns present in both datasets
+as.data.frame(table(data_train$elevel))
+as.data.frame(table(data_predict$elevel))
+as.data.frame(table(data_train$car))
+as.data.frame(table(data_predict$car))
+as.data.frame(table(data_train$zipcode))
+as.data.frame(table(data_predict$zipcode))
+
+# we can see that all the predict data has brand
+# values set as zero although these should be null. Fixing
 plot(data_predict$brand)
 data_predict$brand <- NA
 data_predict$brand <- as.numeric(data_predict$brand)
 
-# creating a column to mark which dataset is in question and combining
+# creating a column to mark which dataset is in question and combining them
 data_train$train <- TRUE
 data_predict$train <- FALSE
 data <- union(data_train, data_predict)
 
 # Coding categorical variables as factors with right levels values
-data$brand <- factor(data$brand, levels=c(0,1), labels = c("Acer", "Sony"))
-data$elevel <- factor(data$elevel, levels=c(0,1,2,3,4), labels = c(
-    "Less than High Scool Degree",
-    "High School Degree",
-    "Some College",
-    "4-Year College Degree",
-    "Master's, Doctoral or Professional Degree"
+data$brand <-
+    factor(data$brand,
+           levels = c(0, 1),
+           labels = c("Acer", "Sony"))
+data$elevel <- factor(
+    data$elevel,
+    levels = c(0, 1, 2, 3, 4),
+    labels = c(
+        "Less than High Scool Degree",
+        "High School Degree",
+        "Some College",
+        "4-Year College Degree",
+        "Master's, Doctoral or Professional Degree"
     )
 )
-data$car <- factor(data$car, levels=seq(1,20), labels=c(
-    "BMW",
-    "Buick",
-    "Cadillac",
-    "Chevrolet",
-    "Chrysler",
-    "Dodge",
-    "Ford",
-    "Honda",
-    "Hyundai",
-    "Jeep",
-    "Kia",
-    "Lincoln",
-    "Mazda",
-    "Mercedes Benz",
-    "Mitsubishi",
-    "Nissan",
-    "Ram",
-    "Subaru",
-    "Toyota",
-    "None of the above"
-))
-data$zipcode <- factor(data$zipcode, levels=seq(0,8), labels=c(
-    "New England",
-    "Mid-Atlantic",
-    "East North Central",
-    "West North Central",
-    "South Atlantic",
-    "East South Central",
-    "West South Central",
-    "Mountain",
-    "Pacific"
-)) 
+data$car <- factor(
+    data$car,
+    levels = seq(1, 20),
+    labels = c(
+        "BMW",
+        "Buick",
+        "Cadillac",
+        "Chevrolet",
+        "Chrysler",
+        "Dodge",
+        "Ford",
+        "Honda",
+        "Hyundai",
+        "Jeep",
+        "Kia",
+        "Lincoln",
+        "Mazda",
+        "Mercedes Benz",
+        "Mitsubishi",
+        "Nissan",
+        "Ram",
+        "Subaru",
+        "Toyota",
+        "None of the above"
+    )
+)
+data$zipcode <- factor(
+    data$zipcode,
+    levels = seq(0, 8),
+    labels = c(
+        "New England",
+        "Mid-Atlantic",
+        "East North Central",
+        "West North Central",
+        "South Atlantic",
+        "East South Central",
+        "West South Central",
+        "Mountain",
+        "Pacific"
+    )
+)
 
 # checking out general patterns
 str(data)
 summary(data)
 
 # Big pair plot
-ggally_mysmooth <- function(data, mapping, ...){
-    ggplot(data = data, mapping=mapping) +
-        geom_density(mapping = aes_string(color='brand'), fill=NA)
+ggally_mysmooth <- function(data, mapping, ...) {
+    ggplot(data = data, mapping = mapping) +
+        geom_density(mapping = aes_string(color = 'brand'), fill = NA)
 }
 
 ggpairs(
     # sample to make manageable, car and zipcode have too many values to plot
-    subset(data[sample(nrow(data), size=1000),], select=-c(car, zipcode)),
+    subset(data[sample(nrow(data), size = 1000), ], select = -c(car, zipcode)),
     mapping = ggplot2::aes(color = brand),
     lower = list(
-        continuous = wrap("points", alpha = 0.2, size=0.3),
-        combo = wrap("dot", alpha = 0.2, size=0.3)
+        continuous = wrap("points", alpha = 0.2, size = 0.3),
+        combo = wrap("dot", alpha = 0.2, size = 0.3)
     ),
     diag = list(continuous = ggally_mysmooth),
     title = "Brand",
-) 
+)
 
-ggsave("./figures/pairs_plot.png", dpi=600, limitsize = FALSE)
+ggsave("./figures/pairs_plot.png",
+       dpi = 600,
+       limitsize = FALSE)
 
 
 # OBSERVATIONS
@@ -103,20 +127,29 @@ ggsave("./figures/pairs_plot.png", dpi=600, limitsize = FALSE)
 # Less clear relationships also with age and credit
 
 # Plotting all variables independently
-qplot(data$salary)
-qplot(data$age)
-qplot(data$elevel)
-qplot(data$car)
-qplot(data$zipcode)
-qplot(data$credit)
-qplot(data$brand)
+qplot(data$salary, fill = data$train, bins=100)
+qplot(data$credit, fill = data$train, bins=100)
+qplot(data$age, fill = data$train, bins=61)
+qplot(data$elevel, fill = data$train)
+qplot(data$car, fill = data$train)
+qplot(data$zipcode, fill = data$train)
+qplot(data$brand, fill = data$train)
 
 # OBSERVATIONS
-# Have to be carefull with the predictions as the brands are not represented equally, 
+
+# Have to be carefull with the predictions as the brands are not represented equally,
 # so simple accuracy metrics in model optimization and comparison won't work
 
-# Checking for missing
-sapply(data, function(x) sum(is.na(x)))
+# All values numeric values have their distributions skewed at the extremes
+# This is probably because exterme answers where just coded as over X or under X
 
-# checking for correlations --> miniscule
-cor(data[ , map_lgl(data, is.numeric)])
+# Categorical features are balanced between test and train set
+
+
+# Checking for missing
+sapply(data, function(x)
+    sum(is.na(x)))
+
+# checking for correlations with numerical variables --> miniscule
+cor(data[, map_lgl(data, is.numeric)])
+

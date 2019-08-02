@@ -1,0 +1,22 @@
+Random Forest 
+
+6929 samples
+  37 predictor
+   2 classes: 'Acer', 'Sony' 
+
+Pre-processing: centered (37), scaled (37) 
+Resampling: Bootstrapped (12 reps) 
+Summary of sample sizes: 5774, 5774, 5775, 5774, 5774, 5774, ... 
+Resampling results across tuning parameters:
+
+  mtry  splitrule   ROC        Sens          Spec     
+   2    gini        0.8642404  0.0242286510  0.9988394
+   2    extratrees  0.7967037  0.0003813883  1.0000000
+  19    gini        0.9780926  0.9015681530  0.9369777
+  19    extratrees  0.9749603  0.8895478625  0.9340761
+  37    gini        0.9787809  0.8962282801  0.9336119
+  37    extratrees  0.9790243  0.8981321598  0.9352368
+
+Tuning parameter 'min.node.size' was held constant at a value of 1
+ROC was used to select the optimal model using the largest value.
+The final values used for the model were mtry = 37, splitrule = extratrees and min.node.size = 1.

@@ -1,0 +1,17 @@
+A glm ensemble of 2 base models: xgbTree, C5.0
+
+Ensemble results:
+Generalized Linear Model 
+
+6929 samples
+   2 predictor
+   2 classes: 'Acer', 'Sony' 
+
+No pre-processing
+Resampling: Bootstrapped (3 reps) 
+Summary of sample sizes: 4620, 4619, 4619 
+Resampling results:
+
+  ROC        Sens       Spec     
+  0.9774829  0.9043281  0.9305953
+

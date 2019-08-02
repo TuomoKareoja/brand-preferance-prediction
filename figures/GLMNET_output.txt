@@ -1,0 +1,24 @@
+glmnet 
+
+6929 samples
+  37 predictor
+   2 classes: 'Acer', 'Sony' 
+
+No pre-processing
+Resampling: Bootstrapped (12 reps) 
+Summary of sample sizes: 5775, 5774, 5774, 5774, 5774, 5774, ... 
+Resampling results across tuning parameters:
+
+  alpha  lambda        ROC        Sens        Spec     
+  0.10   0.0002024331  0.6207564  0.09958432  0.8046657
+  0.10   0.0020243311  0.6207564  0.09958432  0.8046657
+  0.10   0.0202433111  0.6220520  0.06944065  0.8315924
+  0.55   0.0002024331  0.6209504  0.10320882  0.8011838
+  0.55   0.0020243311  0.6213667  0.09748319  0.8037372
+  0.55   0.0202433111  0.6251077  0.05570280  0.8633937
+  1.00   0.0002024331  0.6209607  0.10359021  0.8006035
+  1.00   0.0020243311  0.6220744  0.09137966  0.8059424
+  1.00   0.0202433111  0.6255019  0.03529372  0.8927577
+
+ROC was used to select the optimal model using the largest value.
+The final values used for the model were alpha = 1 and lambda = 0.02024331.

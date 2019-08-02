@@ -34,8 +34,10 @@ make stop
 This will stop the container and remove it. Remember that once you do this
 all unsaved changes are permanently lost.
 
-If you cannot run Makefiles (Windows!) you can check the makefile and
-run the docker command there manually.
+If you cannot use Makefiles (Windows!) you can check the makefile and
+run the docker commands from there manually.
+
+
 
 ## License
 

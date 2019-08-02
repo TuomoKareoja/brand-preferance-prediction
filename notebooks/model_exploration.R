@@ -9,7 +9,7 @@ data_train <- read.csv('./data/processed/processed_train.csv')
 data_test <- read.csv('./data/processed/processed_test.csv')
 
 # Create custom indices
-my_folds <- createMultiFolds(y = data_train$brand, k = 10, times = 3)
+my_folds <- createMultiFolds(y = data_train$brand, k = 6, times = 2)
 
 # Preprocessing steps
 pre_proc <- c('center', 'scale')
@@ -95,13 +95,64 @@ fit_rf <-
 fit_rf
 ggplot(fit_rf)
 
+# Trying the same models but this time without centering and scaling
+
+fit_c5_nopre <-
+    train(
+        data_train[, predictors],
+        data_train[, target],
+        trControl = fitControl,
+        method = 'C5.0',
+        metric = 'ROC'
+    )
+summary(fit_c5_nopre)
+ggplot(fit_c5_nopre)
+
+fit_egb_nopre <-
+    train(
+        data_train[, predictors],
+        data_train[, target],
+        trControl = fitControl,
+        method = 'xgbTree',
+        metric = 'ROC'
+    )
+fit_egb_nopre
+ggplot(fit_egb_nopre)
+
+fit_glmnet_nopre <-
+    train(
+        data_train[, predictors],
+        data_train[, target],
+        trControl = fitControl,
+        method = 'glmnet',
+        metric = 'ROC'
+    )
+fit_glmnet_nopre
+ggplot(fit_glmnet_nopre)
+
+fit_rf_nopre <-
+    train(
+        data_train[, predictors],
+        data_train[, target],
+        trControl = fitControl,
+        method = 'ranger',
+        metric = 'ROC'
+    )
+fit_rf_nopre
+ggplot(fit_rf_nopre)
+
+
 # Compare models graphically
 cv_results <-
     resamples(list(
         C5 = fit_c5,
         EGB = fit_egb,
         GLMNET = fit_glmnet,
-        RF = fit_rf
+        RF = fit_rf,
+        C5_nopre = fit_c5_nopre,
+        EGB_nopre = fit_egb_nopre,
+        GLMNET_nopre = fit_glmnet_nopre,
+        RF_nopre = fit_rf_nopre
     ))
 
 # Random Forest and Extreme Gradient boosting are clearly the best models
@@ -162,6 +213,7 @@ stack_rf_egb <-
                method = 'glm',
                metric = 'ROC',
                trControl = fitControl)
+
 stack_c5_egb <-
     caretStack(fit_c5_egb,
                method = 'glm',

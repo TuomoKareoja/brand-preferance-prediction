@@ -1,0 +1,31 @@
+
+> model_c5
+C5.0 
+
+6929 samples
+  37 predictor
+   2 classes: 'Acer', 'Sony' 
+
+No pre-processing
+Resampling: Bootstrapped (12 reps) 
+Summary of sample sizes: 5774, 5775, 5774, 5774, 5774, 5774, ... 
+Resampling results across tuning parameters:
+
+  model  winnow  trials  ROC        Sens       Spec     
+  rules  FALSE    1      0.9090473  0.9095760  0.8905525
+  rules  FALSE   10      0.9755175  0.8693338  0.9398793
+  rules  FALSE   20      0.9753839  0.8802030  0.9370938
+  rules   TRUE    1      0.9095039  0.9097671  0.8890436
+  rules   TRUE   10      0.9769554  0.8710330  0.9437094
+  rules   TRUE   20      0.9776982  0.8803823  0.9403435
+  tree   FALSE    1      0.9415051  0.8821165  0.9073816
+  tree   FALSE   10      0.9764442  0.8935450  0.9305942
+  tree   FALSE   20      0.9760400  0.9036636  0.9261838
+  tree    TRUE    1      0.9396531  0.8842154  0.9041318
+  tree    TRUE   10      0.9760833  0.8849660  0.9357010
+  tree    TRUE   20      0.9757764  0.8935516  0.9316388
+
+ROC was used to select the optimal model using the largest value.
+The final values used for the model were trials = 20, model = rules and winnow = TRUE.
+
+> sink()

@@ -7,6 +7,7 @@
 \usepackage{amsmath}
 \usepackage{amssymb}
 \usepackage{tikz}
+\usepackage{listings}
 
 \newcommand{\R}{\mathbb{R}}
 \newcommand{\C}{\mathbb{C}}
@@ -52,10 +53,12 @@
 
 \begin{table}[h!]
   \begin{center}
+    \caption{Version history}
     \begin{tabular}{l|c|r}
       \textbf{Version Number} & \textbf{Changes} & \textbf{Date} \\
       \hline
       0.1 & Created basic outline without content & 01.08.2019\\
+      0.2 & Added visualizations, printouts and text outlines & 02.08.2019\\
     \end{tabular}
   \end{center}
 \end{table}
@@ -64,8 +67,74 @@
 
 \section{Fixed predictions}
 
+
+\bigskip
+{
+    \centering
+    \includegraphics[width=\textwidth,height=\textheight,keepaspectratio]{brand_preference_plain.png}
+    \par
+}
+\bigskip
+
+These are results after we added predictions
+
+\bigskip
+{
+    \centering
+    \includegraphics[width=\textwidth,height=\textheight,keepaspectratio]{brand_preference_marked.png}
+    \par
+}
+\bigskip
+
+We can see that the predicted values include a higher proportion of Acer preferences than there are in the data with values
+
+\section{Chosen Model and Its' Performance}
+
+
+\bigskip
+{
+    \centering
+    \includegraphics[width=\textwidth,height=\textheight,keepaspectratio]{brand_preference_plain.png}
+    \par
+}
+\bigskip
+
+Here we explain what is our model and how it performs
+
+
 \section{Model Comparison and Performance}
 
-\section{Chosen Model}
+
+\bigskip
+{
+    \centering
+    \includegraphics[width=\textwidth,height=\textheight,keepaspectratio]{dotplot_comparison.png}
+    \par
+}
+\bigskip
+
+\bigskip
+{
+    \centering
+    \includegraphics[width=\textwidth,height=\textheight,keepaspectratio]{AUC_comparison.png}
+    \par
+}
+\bigskip
+
+Differences between the models are very small
+
+\bigskip
+{
+    \centering
+    \includegraphics[width=\textwidth,height=\textheight,keepaspectratio]{model_prediction_correlations.png}
+    \par
+}
+\bigskip
+
+
+\lstinputlisting[float=h,frame=tb,caption=C5.0,label=zebra]{./figures/C5.0_output.txt}
+\lstinputlisting[float=h,frame=tb,caption=Extreme Gradient Boosting,label=zebra]{./figures/EGB_output.txt}
+\lstinputlisting[float=h,frame=tb,caption=Random Forest,label=zebra]{./figures/RF_output.txt}
+\lstinputlisting[float=h,frame=tb,caption=GLM Ensemble (C5.0 + EGB + RF),label=zebra]{./figures/C5.0_EGB_RF_output.txt}
 
 \end{document}
