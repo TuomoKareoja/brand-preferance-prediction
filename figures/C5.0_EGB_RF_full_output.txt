@@ -1,0 +1,25 @@
+
+Call:
+NULL
+
+Deviance Residuals: 
+    Min       1Q   Median       3Q      Max  
+-2.9640  -0.2363   0.1570   0.1985   2.7980  
+
+Coefficients:
+            Estimate Std. Error z value Pr(>|z|)    
+(Intercept) -4.12371    0.05513 -74.803   <2e-16 ***
+C5.0         5.75311    0.28840  19.948   <2e-16 ***
+ranger       2.60867    0.23053  11.316   <2e-16 ***
+xgbTree      0.15802    0.24048   0.657    0.511    
+---
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+
+(Dispersion parameter for binomial family taken to be 1)
+
+    Null deviance: 39386  on 29693  degrees of freedom
+Residual deviance: 10923  on 29690  degrees of freedom
+AIC: 10931
+
+Number of Fisher Scoring iterations: 6
+

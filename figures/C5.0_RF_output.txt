@@ -1,0 +1,28 @@
+
+> summary(model_c5_rf)
+
+Call:
+NULL
+
+Deviance Residuals: 
+    Min       1Q   Median       3Q      Max  
+-2.9743  -0.2265   0.1548   0.2071   2.8087  
+
+Coefficients:
+            Estimate Std. Error z value Pr(>|z|)    
+(Intercept)  4.43196    0.06578   67.37   <2e-16 ***
+C5.0        -5.23622    0.27456  -19.07   <2e-16 ***
+ranger      -3.45212    0.22843  -15.11   <2e-16 ***
+---
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+
+(Dispersion parameter for binomial family taken to be 1)
+
+    Null deviance: 27572.2  on 20786  degrees of freedom
+Residual deviance:  7826.8  on 20784  degrees of freedom
+AIC: 7832.8
+
+Number of Fisher Scoring iterations: 6
+
+
+> sink()

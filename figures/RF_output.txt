@@ -1,26 +1,319 @@
 
-> model_rf
-Random Forest 
+> summary(model_rf)
 
-6929 samples
-  37 predictor
-   2 classes: 'Acer', 'Sony' 
+Call:
+(function (x, y, trials = 1, rules = FALSE, weights = NULL, control = C5.0Control(), costs = NULL, ...) {    funcCall
+ 118811.6, 97162.92, 41801.08, 83385.8, 108972.8, 50444.96, 82882.6, 49168.84, 102236.6, 113165.8, 100014.4, 33889.71, 20000,
+ 129376.1, 101090.2, 129777.1, 45991.51, 63077.13, 36877.89, 37634.
 
-Pre-processing: centered (37), scaled (37) 
-Resampling: Bootstrapped (12 reps) 
-Summary of sample sizes: 5774, 5774, 5775, 5774, 5774, 5774, ... 
-Resampling results across tuning parameters:
 
-  mtry  splitrule   ROC        Sens          Spec     
-   2    gini        0.8642404  0.0242286510  0.9988394
-   2    extratrees  0.7967037  0.0003813883  1.0000000
-  19    gini        0.9780926  0.9015681530  0.9369777
-  19    extratrees  0.9749603  0.8895478625  0.9340761
-  37    gini        0.9787809  0.8962282801  0.9336119
-  37    extratrees  0.9790243  0.8981321598  0.9352368
+C5.0 [Release 2.07 GPL Edition]  	Fri Aug  2 14:05:09 2019
+-------------------------------
 
-Tuning parameter 'min.node.size' was held constant at a value of 1
-ROC was used to select the optimal model using the largest value.
-The final values used for the model were mtry = 37, splitrule = extratrees and min.node.size = 1.
+Class specified by attribute `outcome'
+
+Read 6929 cases (38 attributes) from undefined.data
+
+-----  Trial 0:  -----
+
+Decision tree:
+
+salary > 123755.3: Sony (1448/37)
+salary <= 123755.3:
+:...salary <= 47688.71:
+    :...age <= 59: Sony (1006/26)
+    :   age > 59:
+    :   :...salary > 30273.7: Acer (292/8)
+    :       salary <= 30273.7:
+    :       :...salary <= 20241.24: Sony (27/1)
+    :           salary > 20241.24: Acer (173/81)
+    salary > 47688.71:
+    :...age > 60:
+        :...salary <= 76556.47: Acer (445/42)
+        :   salary > 76556.47: Sony (841/28)
+        age <= 60:
+        :...salary <= 68615.58:
+            :...age <= 40:
+            :   :...salary <= 51545.83: Sony (64/29)
+            :   :   salary > 51545.83: Acer (316/25)
+            :   age > 40:
+            :   :...age <= 57: Sony (318/6)
+            :       age > 57: Acer (51/21)
+            salary > 68615.58:
+            :...salary > 98981.91:
+                :...age <= 38: Sony (380/36)
+                :   age > 38: Acer (473/63)
+                salary <= 98981.91:
+                :...age <= 38: Acer (510/21)
+                    age > 38:
+                    :...salary > 77508.87: Acer (414/32)
+                        salary <= 77508.87:
+                        :...salary <= 72495.18: Sony (66/16)
+                            salary > 72495.18: Acer (105/44)
+
+-----  Trial 1:  -----
+
+Decision tree:
+
+salary > 129338.9: Sony (868.7/3.9)
+salary <= 129338.9:
+:...salary <= 30273.7: Sony (697.5/86.3)
+    salary > 30273.7:
+    :...salary <= 104384:
+        :...age <= 37:
+        :   :...salary <= 44393.37: Sony (175.6)
+        :   :   salary > 44393.37: Acer (1014.8/219.7)
+        :   age > 37:
+        :   :...age <= 60:
+        :       :...salary <= 78037.88: Sony (1150.6/263.6)
+        :       :   salary > 78037.88: Acer (535.5/160.5)
+        :       age > 60:
+        :       :...salary <= 69123.73: Acer (477.5/30.9)
+        :           salary > 69123.73: Sony (661.1/151.8)
+        salary > 104384:
+        :...age > 62: Sony (300.3)
+            age <= 62:
+            :...age <= 37: Sony (300.4/11.6)
+                age > 37:
+                :...age <= 57: Acer (570.3/194.3)
+                    age > 57: Sony (176.6/60.9)
+
+-----  Trial 2:  -----
+
+Decision tree:
+
+salary > 129338.9: Sony (698.5/5.3)
+salary <= 129338.9:
+:...salary > 96067.7:
+    :...age > 62: Sony (318.5)
+    :   age <= 62:
+    :   :...age <= 42: Sony (887.6/204.4)
+    :       age > 42:
+    :       :...salary <= 118138.7: Acer (364.2/94.5)
+    :           salary > 118138.7: Sony (386.5/156.9)
+    salary <= 96067.7:
+    :...salary <= 47688.71:
+        :...age <= 56: Sony (686.9/38.5)
+        :   age > 56:
+        :   :...salary <= 27851.75: Sony (379.8/142.5)
+        :       salary > 27851.75: Acer (439.1/99.4)
+        salary > 47688.71:
+        :...age <= 35: Acer (573.4/109.1)
+            age > 35:
+            :...car.Buick > 0: Acer (110.2/32.7)
+                car.Buick <= 0:
+                :...salary > 79456.27: Sony (524.9/212.6)
+                    salary <= 79456.27:
+                    :...age > 61: Acer (550.3/133.3)
+                        age <= 61:
+                        :...salary <= 68668.62: Sony (540.4/193)
+                            salary > 68668.62: Acer (468.7/173.4)
+
+-----  Trial 3:  -----
+
+Decision tree:
+
+salary > 130722.5: Sony (533)
+salary <= 130722.5:
+:...salary <= 47688.71:
+    :...age <= 56: Sony (582.9/48)
+    :   age > 56: Acer (824.8/349.1)
+    salary > 47688.71:
+    :...salary <= 96277.11:
+        :...age > 41: Acer (2000.7/932.2)
+        :   age <= 41:
+        :   :...salary <= 55899.98: Sony (297.6/140.8)
+        :       salary > 55899.98: Acer (716.9/112.6)
+        salary > 96277.11:
+        :...age > 62: Sony (269.3)
+            age <= 62:
+            :...age <= 40: Sony (731.7/229.6)
+                age > 40:
+                :...age > 58: Sony (248.9/96.8)
+                    age <= 58:
+                    :...salary <= 122788.8: Acer (411.9/90.5)
+                        salary > 122788.8: Sony (311.2/144.6)
+
+-----  Trial 4:  -----
+
+Decision tree:
+
+salary > 130722.5: Sony (459.5)
+salary <= 130722.5:
+:...salary <= 47226.28:
+    :...age <= 57: Sony (535/53.7)
+    :   age > 57:
+    :   :...car.Toyota > 0: Acer (31.9/6.1)
+    :       car.Toyota <= 0:
+    :       :...car.Kia > 0: Acer (32.7/7.1)
+    :           car.Kia <= 0:
+    :           :...car.BMW > 0: Acer (28.8/7)
+    :               car.BMW <= 0:
+    :               :...salary <= 32774.66: Sony (510.2/195.1)
+    :                   salary > 32774.66: Acer (194.8/67)
+    salary > 47226.28:
+    :...salary <= 77227.22:
+        :...age <= 41: Acer (732/248.5)
+        :   age > 41:
+        :   :...age <= 56: Sony (587.9/80.9)
+        :       age > 56: Acer (766.1/320.6)
+        salary > 77227.22:
+        :...salary <= 92357.64:
+            :...age <= 57: Acer (461.8/41.9)
+            :   age > 57: Sony (434.4/78.8)
+            salary > 92357.64:
+            :...age <= 32: Sony (387.6/123.5)
+                age > 32:
+                :...salary > 127239: Sony (154.1/46.8)
+                    salary <= 127239:
+                    :...age <= 56: Acer (953.4/328.6)
+                        age > 56: Sony (658.8/170.9)
+
+-----  Trial 5:  -----
+
+Decision tree:
+
+salary > 130722.5: Sony (384.2)
+salary <= 130722.5:
+:...salary <= 20278.24: Sony (60.4/6.4)
+    salary > 20278.24:
+    :...salary > 113165.8: Sony (1022.9/392.9)
+        salary <= 113165.8:
+        :...salary <= 78135.95:
+            :...age > 63:
+            :   :...salary <= 72208.98: Acer (742.7/216)
+            :   :   salary > 72208.98: Sony (243.2/67.3)
+            :   age <= 63:
+            :   :...age > 40: Sony (1533.3/455.2)
+            :       age <= 40:
+            :       :...salary <= 54070.93: Sony (591.2/187.2)
+            :           salary > 54070.93: Acer (363.5/115.9)
+            salary > 78135.95:
+            :...age > 62: Sony (406/33.9)
+                age <= 62:
+                :...salary <= 96067.7: Acer (710.2/148.4)
+                    salary > 96067.7:
+                    :...car.Nissan <= 0: Acer (824/364.1)
+                        car.Nissan > 0: Sony (47.3/8)
+
+-----  Trial 6:  -----
+
+Decision tree:
+
+salary > 129338.9: Sony (352.4)
+salary <= 129338.9:
+:...age > 40:
+    :...salary <= 107619.1: Sony (3592.3/1660.3)
+    :   salary > 107619.1:
+    :   :...age <= 62: Acer (805/268.5)
+    :       age > 62: Sony (105.7)
+    age <= 40:
+    :...salary > 105314.5: Sony (464.3/59.7)
+        salary <= 105314.5:
+        :...salary <= 44393.37: Sony (145.9)
+            salary > 44393.37:
+            :...salary <= 95389.18: Acer (972.3/352.1)
+                salary > 95389.18: Sony (482/214.2)
+
+-----  Trial 7:  -----
+
+Decision tree:
+
+salary > 129338.9: Sony (317.5)
+salary <= 129338.9:
+:...salary <= 102873.9:
+    :...salary <= 20278.24: Sony (41.6)
+    :   salary > 20278.24:
+    :   :...salary <= 26630.18: Sony (381.8/156.8)
+    :       salary > 26630.18: Acer (4612.7/2031.3)
+    salary > 102873.9:
+    :...age <= 37: Sony (354.3/37.4)
+        age > 37:
+        :...age > 62: Sony (116.8)
+            age <= 62:
+            :...age <= 41: Sony (247.1/100)
+                age > 41:
+                :...age <= 59: Acer (695.1/230.2)
+                    age > 59: Sony (140.1/48.3)
+
+-----  Trial 8:  -----
+
+Decision tree:
+
+age > 38: Sony (5201.4/2450.7)
+age <= 38:
+:...salary <= 47226.28: Sony (285.5)
+    salary > 47226.28:
+    :...salary > 102795.1: Sony (444.2/15.9)
+        salary <= 102795.1:
+        :...salary <= 51545.83: Sony (225.5/78.1)
+            salary > 51545.83: Acer (666.5/177.5)
+
+-----  Trial 9:  -----
+
+Decision tree:
+
+salary > 127192.9: Sony (377.8)
+salary <= 127192.9:
+:...salary <= 26720.76: Sony (279.3/28.5)
+    salary > 26720.76:
+    :...age <= 39:
+        :...salary > 102795.1: Sony (343/5.2)
+        :   salary <= 102795.1:
+        :   :...salary <= 47688.71: Sony (289.5)
+        :       salary > 47688.71:
+        :       :...salary <= 96280.3: Acer (507.3/34.3)
+        :           salary > 96280.3: Sony (340.3/150.7)
+        age > 39:
+        :...salary > 85218.17:
+            :...age <= 60: Acer (1248/229.9)
+            :   age > 60: Sony (419)
+            salary <= 85218.17:
+            :...age <= 57:
+                :...salary <= 77508.87: Sony (810.2/82.2)
+                :   salary > 77508.87: Acer (161.1)
+                age > 57:
+                :...salary <= 73284.45: Acer (1392.8/288.2)
+                    salary > 73284.45: Sony (452.7/136.4)
+
+
+Evaluation on training data (6929 cases):
+
+Trial	    Decision Tree   
+-----	  ----------------  
+	  Size      Errors  
+
+   0	    17  516( 7.4%)
+   1	    12  779(11.2%)
+   2	    14 1074(15.5%)
+   3	    11 1319(19.0%)
+   4	    16  800(11.5%)
+   5	    12  993(14.3%)
+   6	     8 1778(25.7%)
+   7	     9 2051(29.6%)
+   8	     5 1908(27.5%)
+   9	    12  594( 8.6%)
+boost	        532( 7.7%)   <<
+
+
+	   (a)   (b)    <-classified as
+	  ----  ----
+	  2331   290    (a): class Acer
+	   242  4066    (b): class Sony
+
+
+	Attribute usage:
+
+	100.00%	salary
+	100.00%	age
+	 26.86%	car.Buick
+	  9.02%	car.Nissan
+	  7.76%	car.Toyota
+	  7.39%	car.Kia
+	  6.97%	car.BMW
+
+
+Time: 0.4 secs
+
 
 > sink()

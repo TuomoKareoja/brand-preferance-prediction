@@ -5,8 +5,8 @@ library(caret)
 
 data_train <- read.csv('./data/processed/processed_train.csv')
 
-# Create custom indices
-my_folds <- createMultiFolds(y = data_train$brand, k = 6, times = 2)
+# use the right folding pattern
+source("./scr/my_folds.r")
 
 # Preprocessing steps
 pre_proc <- c('center', 'scale')

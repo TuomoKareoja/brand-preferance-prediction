@@ -15,7 +15,7 @@ data_encoded <- bind_cols(encoded_columns, data[c('salary', 'age', 'credit', 'br
 
 # # Scaling everything using values from both train and predict datasets 
 # scaler <- preProcess(select(data_encoded, select=-c('sony', 'predict')), method=c('center', 'scale'))
-# data_encoded_scaled <- predict(scaler, data_encoded)
+# data_encoded_scaled <- predict(scaler, data_encod ed)
 
 # Creating separate datasets for training, testing and predicting
 pred <- data_encoded[data_encoded$predict == 1, !names(data_encoded) %in% c('predict')]

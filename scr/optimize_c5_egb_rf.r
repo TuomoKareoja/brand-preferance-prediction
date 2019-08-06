@@ -5,8 +5,8 @@ library(caret)
 
 data_train <- read.csv('./data/processed/processed_train.csv')
 
-# Create custom indices
-my_folds <- createMultiFolds(y = data_train$brand, k = 3, times = 1)
+# use the right folding pattern
+source("./scr/my_folds.r")
 
 # Create reusable trainControl object: myControl
 fitControl <- trainControl(

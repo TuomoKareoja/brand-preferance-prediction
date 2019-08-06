@@ -1,5 +1,3 @@
-
-> model_c5_egb_rf
 A glm ensemble of 2 base models: xgbTree, ranger
 
 Ensemble results:
@@ -17,5 +15,3 @@ Resampling results:
   ROC        Sens       Spec    
   0.9792814  0.9505129  0.884273
 
-
-> sink()

@@ -20,9 +20,6 @@ data_clean_nomissing <- filter(data_clean, predict == 0)
 # Create custom indices
 my_folds <- createMultiFolds(y = data$brand, k = 10, times = 3)
 
-# Preprocessing steps
-pre_proc <- c('center', 'scale')
-
 # Create reusable trainControl object: myControl
 fitControl <- trainControl(
     summaryFunction = twoClassSummary,
@@ -35,19 +32,12 @@ fitControl <- trainControl(
 target <- 'brand'
 predictors <- names(data)[!names(data) %in% target]
 
-fit_c5_egb_normalized <- caretList(
+fit_c5 <- train(
     data[, predictors],
     data[, target],
     trControl = fitControl,
-    preProc = pre_proc,
-    methodList = c('C5.0', 'ranger'),
+    method = 'C5.0',
     metric = 'ROC'
-)
+) 
 
-stack_c5_egb_normalized <-
-    caretStack(fit_c5_egb_normalized,
-               method = 'glm',
-               metric = 'ROC',
-               trControl = fitControl)
-
-saveRDS(stack_c5_egb_normalized, './models/C5.0_EGB_normalized_full.rds')
+saveRDS(fit_c5_rf, './models/C5.0_full.rds')
