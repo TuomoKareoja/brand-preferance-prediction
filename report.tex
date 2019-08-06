@@ -58,7 +58,8 @@
       \hline
       0.1 & Created basic outline without content & 01.08.2019\\
       0.2 & Added visualizations, printouts and text outlines & 02.08.2019\\
-      0.9 & Better visualizations and more explanations. Abandoned ensemble models & 05.08.2019\\
+      0.9 & Better visualizations. Abandoned ensemble models & 05.08.2019\\
+      1.0 & Finalized text. More visualizations & 06.08.2019\\
     \end{tabular}
   \end{center}
 \end{table}
@@ -76,7 +77,7 @@
 \bigskip
 
 These are results of the brand preference question after we added in our predictions. We can wee that Sony
-is clearly the more preferred brand, but that the difference is not huge.
+is clearly the more preferred brand.
 
 \bigskip
 {
@@ -86,23 +87,31 @@ is clearly the more preferred brand, but that the difference is not huge.
 }
 \bigskip
 
+If we separate from the non-missing answers and the predicted answers, we see
+that there were quite a lot of predicted values, but that the brand preference distribution
+is the same for both. We can see this even more clearly in a percentage plot.
 
-Does look this is actually missing at random in relation to the brand preference.
+\bigskip
+{
+    \centering
+    \includegraphics[width=\textwidth,height=\textheight,keepaspectratio]{brand_preference_marked_percentages.png}
+    \par
+}
+\bigskip
 
-TODO check percentages
-
-Here we can see that if we would have just used the data without missing values our estimate of the difference
-between the two brand would have been much bigger. In the predicted values there much more customers who are predicted
-to prefer Acer more than Sony. Assuming that our model is correct, this means that the data about brand
-preference is not missing at random and that using just the non-missing values would lead to quite biased
-conclusions.
-
+If our model is correct (and it is very accurate) this suggests that the missing brand preference values
+do not bias our estimate of the brand preference distribution, so in this sense adding in the missing
+values does not give any value. On the other hand our model is very accurate and in the future
+the answers might not be missing at random. If this is the case, we now have proven that we can make
+an accurate model that can correct this bias.
 
 \section{Chosen Model and Its' Performance}
 
 The model used for the predictions is a C5.0 classification tree. From the the graphs below we can see that
-on all the important metrics this model performs really well with the Test set accuracy score being.
-If we compare the test set and train set accuracy metric we can see that the model also seems to have almost no overfit.
+on all the important metrics this model performs really well with the train set accuracy being 93.5 \% and
+with test set 92.3 \%. This shows that the model is accurate and at the same time
+the risk of overfitting is low with the
+test and train metrics being so close to each other. This goes for all the other performance metrics as well.
 
 \bigskip
 {
@@ -123,26 +132,37 @@ If we compare the test set and train set accuracy metric we can see that the mod
 As the C5.0 decision tree is too complex to understandably visualize. We can instead look at the
 relative model feature importances:
 
-% \bigskip
-% {
-%     \centering
-%     \includegraphics[width=\textwidth,height=\textheight,keepaspectratio]{c5_full_feature_importance.png}
-%     \par
-% }
-% \bigskip
+\bigskip
+{
+    \centering
+    \includegraphics[width=\textwidth,height=\textheight,keepaspectratio]{c5_full_feature_importance.png}
+    \par
+}
+\bigskip
 
 We can see that by far the most import variable is the salary of the customer. If we plot the distribution
-of salary with the brand preference, we can see that there is clearly differences but that these
-are quite complex and nonlinear and would have not been easily captured with a linear model.
+of salary with the brand preference, we can see that there are clear differences in brand preference, but that these
+are quite complex and nonlinear and would have not been easily captured with a linear model. Tree
+type models catch these kind of complex relationships much more easily.
+
+\bigskip
+{
+    \centering
+    \includegraphics[width=\textwidth,height=\textheight,keepaspectratio]{brand_salary_distribution.png}
+    \par
+}
+\bigskip
+
 
 \section{Model Comparison and Performance}
 
 In total three different model types were tried: C5.0, Random Forest (RF) and Extreme Gradient Boosting (EGB).
-All of these model are tree based models and all performed excellently. This made is quite problematic
-to choose the best model.
+All of these model are tree based models and all performed excellently. This made choosing the right model
+quite problematic.
 
-From the cross validation boxplots we can see that all models perform very well in all metrics and it is hard to
-decide which is the best:
+From the cross validation boxplots we can see that all models perform very well in all metrics and that
+the results have a tight spread. This suggests that the models have good performance would probably
+generalize well to previously unknown data as well.
 
 \bigskip
 {
@@ -152,7 +172,7 @@ decide which is the best:
 }
 \bigskip
 
-The small differences between the models can best be seen in the ROC-curve:
+The small differences between the models can best be seen in the ROC-curve calculated with test data:
 
 \bigskip
 {
@@ -163,9 +183,14 @@ The small differences between the models can best be seen in the ROC-curve:
 \bigskip
 
 The models are almost indistinguishable, with our chosen C5.0 model maybe somewhat getting a head around
-the optimal (Youden Index) point.
+the optimal (Youden Index) point closest to the left upper corner of the graph.
 
-Random Forests confusion matrix test and train
+If we look at the results of the other two models more closely, we see that the Random Forest
+model has the smallest difference between the metrics from train and test datasets. This
+would suggest that this model is the most generalizable of the models tested. It did not
+as well as the C5.0 with AUC-measure (previous boxplot) and sensitivity, but beat it on
+specificity. The confidence interval of the cross validated metrics were overlapping though
+so we can't say with high confidence that C5.0 is strictly better.
 
 \bigskip
 {
@@ -183,7 +208,10 @@ Random Forests confusion matrix test and train
 }
 \bigskip
 
-Extreme Gradient Boosting confusion matrix test and train
+Extreme Gradient Boosting had a metric score difference between train and test datasets, which
+was comparable to C5.0 model. It also performed less well than C5.0 on AUC-measure and specificity,
+but had the best sensitivity of all the models. All in all also a very good model, but slightly
+worse than C5.0 and Random Forest.
 
 \bigskip
 {
@@ -201,27 +229,29 @@ Extreme Gradient Boosting confusion matrix test and train
 }
 \bigskip
 
-Model prediction correlation is quite low (cross validated scores don't line up neatly on the diagonal).
+\section{Ensemble Models?}
 
-% \bigskip
-% {
-%     \centering
-%     \includegraphics[width=\textwidth,height=\textheight,keepaspectratio]{model_prediction_correlations.png}
-%     \par
-% }
-% \bigskip
+When looking at the cross validation model AUC-scores we see that the
+correlation between these scores is very low between the models
+(AUC scores don't line up neatly on the diagonal).
 
-This opened up the possibility of trying out an ensemble model that combines all the models, so that
-they could compensate for each others weaknesses. This was tried out with the combinations of two models and all
-three models. Accuracy of the model improved slightly, but at the same time difference between test accuracy and train
-accuracy grew. Because the gains where small, but the change of overfitting much bigger, this venture was abandoned and
-a more simple model chosen. In the end C5.0 won, because of the extremely small difference between test and train accuracy.
-This model seemed to offer accurate predictions combined with the lowest change of overfitting.
+\bigskip
+{
+    \centering
+    \includegraphics[width=\textwidth,height=\textheight,keepaspectratio]{model_prediction_correlations.png}
+    \par
+}
+\bigskip
 
-Here are the command line summaries of the models in cross validation state:
-
-\lstinputlisting[float=h,frame=tb,caption=C5.0,label=zebra]{./figures/C5.0_output.txt}
-\lstinputlisting[float=h,frame=tb,caption=Extreme Gradient Boosting,label=zebra]{./figures/EGB_output.txt}
-\lstinputlisting[float=h,frame=tb,caption=Random Forest,label=zebra]{./figures/RF_output.txt}
+This means that the model seem to be making different kinds of mistakes.
+We could try to exploit this by building an ensemble model our individual model results.
+This was tried, with the best model being a combination of C5.0 and
+Random Forest. This model actually had slightly better scores on all metrics
+than individual models, but the improvement was very small and at the same
+time the model showed signs of overfitting with it having the biggest difference
+in performance between train and test set. Because the increase in performance so small
+it was deemed unwise to increase the complexity of the model by using an ensemble method.
+With the bigger difference between the train and test set this complex model was showing
+signs of overfit although it still performed better than other models with the test set.
 
 \end{document}

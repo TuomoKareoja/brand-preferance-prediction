@@ -16,20 +16,6 @@ model_egb <- readRDS('./models/EGB.rds')
 model_rf <- readRDS('./models/RF.rds')
 model_c5_full <- readRDS('./models/C5.0_full.rds')
 
-# Save model output
-sink("./figures/C5.0_output.txt")
-summary(model_c5)
-sink()
-sink("./figures/EGB_output.txt")
-model_egb
-sink()
-sink("./figures/RF_output.txt")
-summary(model_rf)
-sink()
-sink("./figures/C5.0_full_output.txt")
-summary(model_c5_rf_full)
-sink()
-
 # Comparing models
 
 # TODO how to incorporate ensemble models?
@@ -116,7 +102,8 @@ dev.off()
 # Model correlations are low there ensembling is a good idea
 modelCor(cv_results)
 splom(cv_results)
-ggsave('./figures/model_prediction_correlations.png')
+png(filename='./figures/model_prediction_correlations.png')
+dev.off()
 
 # Model variable importance
 png(filename='./figures/c5_feature_importance.png') 
@@ -131,3 +118,16 @@ dev.off()
 png(filename='./figures/c5_full_feature_importance.png') 
 plot(varImp(model_c5_full, useModel = FALSE), top = 15)
 dev.off()
+
+# Salary is in all models the most important predictor
+# Lets draw the distribution of wage and brand preference with the full data
+data_full <- bind_rows(data_train, data_test)
+png(filename='./figures/brand_salary_distribution.png') 
+ggplot(data_full, aes(x=salary, color=brand, group=brand)) +
+    geom_freqpoly(data=subset(data_full, brand=='Sony'), bins=60, aes(y=(..count..)/sum(..count..))) +
+    geom_freqpoly(data=subset(data_full, brand=='Acer'), bins=60, aes(y=(..count..)/sum(..count..))) +
+    xlab('Salary') +
+    ylab('%') +
+    scale_y_continuous(labels=scales::percent)
+dev.off()
+ 

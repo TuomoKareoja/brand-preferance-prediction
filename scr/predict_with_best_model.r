@@ -6,8 +6,6 @@ library(caretEnsemble)
 
 best_model_path <- './models/C5.0_full.rds'
 
-data_train <- read.csv('./data/processed/processed_train.csv')
-data_test <- read.csv('./data/processed/processed_test.csv')
 data_pred <- read.csv('./data/processed/processed_pred.csv')
 data_clean <- read.csv('./data/clean/clean_train_predict.csv')
 

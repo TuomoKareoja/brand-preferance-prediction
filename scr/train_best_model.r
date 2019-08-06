@@ -40,4 +40,4 @@ fit_c5 <- train(
     metric = 'ROC'
 ) 
 
-saveRDS(fit_c5_rf, './models/C5.0_full.rds')
+saveRDS(fit_c5, './models/C5.0_full.rds')

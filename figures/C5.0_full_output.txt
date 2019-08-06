@@ -1,28 +1,750 @@
 
 > summary(model_c5_rf_full)
 
-Call:
-NULL
+> library(dplyr)
 
-Deviance Residuals: 
-    Min       1Q   Median       3Q      Max  
--2.9592  -0.2349   0.1593   0.2031   2.8183  
+> library(readr)
 
-Coefficients:
-            Estimate Std. Error z value Pr(>|z|)    
-(Intercept) -4.12388    0.05419  -76.10   <2e-16 ***
-C5.0         6.23863    0.25209   24.75   <2e-16 ***
-ranger       2.25547    0.21905   10.30   <2e-16 ***
----
-Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+> library(tidyr)
 
-(Dispersion parameter for binomial family taken to be 1)
+> library(caret)
 
-    Null deviance: 39386  on 29693  degrees of freedom
-Residual deviance: 10982  on 29691  degrees of freedom
-AIC: 10988
+> library(caTools)
 
-Number of Fisher Scoring iterations: 6
+> library(caretEnsemble)
 
+> data_train <- read.csv('./data/processed/processed_train.csv')
 
-> sink()
+> data_test <- read.csv('./data/processed/processed_test.csv')
+
+> data_pred <- read.csv('./data/processed/processed_pred.csv')
+
+> data_clean <- read.csv('./data/clean/clean_train_predict.csv')
+
+> # combining the train data
+> data <- bind_rows(data_train, data_test)
+
+> # splitting the cleaned data
+> data_clean_missing <- filter(data_clean, predict == 1)
+
+> data_clean_nomissing <- filter(data_clean, predict == 0)
+
+> # Create custom indices
+> my_folds <- createMultiFolds(y = data$brand, k = 10, times = 3)
+
+> # Create reusable trainControl object: myControl
+> fitControl <- trainControl(
++     summaryFunction = twoClassSummary,
++     classProbs = TRUE,
++   .... [TRUNCATED] 
+
+> target <- 'brand'
+
+> predictors <- names(data)[!names(data) %in% target]
+
+> fit_c5 <- train(
++     data[, predictors],
++     data[, target],
++     trControl = fitControl,
++     method = 'C5.0',
++     metric = 'ROC'
++ ) 
++ Fold01.Rep1: model=tree, winnow=FALSE, trials=20 
+- Fold01.Rep1: model=tree, winnow=FALSE, trials=20 
++ Fold01.Rep1: model=tree, winnow= TRUE, trials=20 
+- Fold01.Rep1: model=tree, winnow= TRUE, trials=20 
++ Fold01.Rep1: model=rules, winnow=FALSE, trials=20 
+- Fold01.Rep1: model=rules, winnow=FALSE, trials=20 
++ Fold01.Rep1: model=rules, winnow= TRUE, trials=20 
+- Fold01.Rep1: model=rules, winnow= TRUE, trials=20 
++ Fold02.Rep1: model=tree, winnow=FALSE, trials=20 
+- Fold02.Rep1: model=tree, winnow=FALSE, trials=20 
++ Fold02.Rep1: model=tree, winnow= TRUE, trials=20 
+- Fold02.Rep1: model=tree, winnow= TRUE, trials=20 
++ Fold02.Rep1: model=rules, winnow=FALSE, trials=20 
+- Fold02.Rep1: model=rules, winnow=FALSE, trials=20 
++ Fold02.Rep1: model=rules, winnow= TRUE, trials=20 
+- Fold02.Rep1: model=rules, winnow= TRUE, trials=20 
++ Fold03.Rep1: model=tree, winnow=FALSE, trials=20 
+- Fold03.Rep1: model=tree, winnow=FALSE, trials=20 
++ Fold03.Rep1: model=tree, winnow= TRUE, trials=20 
+- Fold03.Rep1: model=tree, winnow= TRUE, trials=20 
++ Fold03.Rep1: model=rules, winnow=FALSE, trials=20 
+- Fold03.Rep1: model=rules, winnow=FALSE, trials=20 
++ Fold03.Rep1: model=rules, winnow= TRUE, trials=20 
+- Fold03.Rep1: model=rules, winnow= TRUE, trials=20 
++ Fold04.Rep1: model=tree, winnow=FALSE, trials=20 
+- Fold04.Rep1: model=tree, winnow=FALSE, trials=20 
++ Fold04.Rep1: model=tree, winnow= TRUE, trials=20 
+- Fold04.Rep1: model=tree, winnow= TRUE, trials=20 
++ Fold04.Rep1: model=rules, winnow=FALSE, trials=20 
+- Fold04.Rep1: model=rules, winnow=FALSE, trials=20 
++ Fold04.Rep1: model=rules, winnow= TRUE, trials=20 
+- Fold04.Rep1: model=rules, winnow= TRUE, trials=20 
++ Fold05.Rep1: model=tree, winnow=FALSE, trials=20 
+- Fold05.Rep1: model=tree, winnow=FALSE, trials=20 
++ Fold05.Rep1: model=tree, winnow= TRUE, trials=20 
+- Fold05.Rep1: model=tree, winnow= TRUE, trials=20 
++ Fold05.Rep1: model=rules, winnow=FALSE, trials=20 
+- Fold05.Rep1: model=rules, winnow=FALSE, trials=20 
++ Fold05.Rep1: model=rules, winnow= TRUE, trials=20 
+- Fold05.Rep1: model=rules, winnow= TRUE, trials=20 
++ Fold06.Rep1: model=tree, winnow=FALSE, trials=20 
+- Fold06.Rep1: model=tree, winnow=FALSE, trials=20 
++ Fold06.Rep1: model=tree, winnow= TRUE, trials=20 
+- Fold06.Rep1: model=tree, winnow= TRUE, trials=20 
++ Fold06.Rep1: model=rules, winnow=FALSE, trials=20 
+- Fold06.Rep1: model=rules, winnow=FALSE, trials=20 
++ Fold06.Rep1: model=rules, winnow= TRUE, trials=20 
+- Fold06.Rep1: model=rules, winnow= TRUE, trials=20 
++ Fold07.Rep1: model=tree, winnow=FALSE, trials=20 
+- Fold07.Rep1: model=tree, winnow=FALSE, trials=20 
++ Fold07.Rep1: model=tree, winnow= TRUE, trials=20 
+- Fold07.Rep1: model=tree, winnow= TRUE, trials=20 
++ Fold07.Rep1: model=rules, winnow=FALSE, trials=20 
+- Fold07.Rep1: model=rules, winnow=FALSE, trials=20 
++ Fold07.Rep1: model=rules, winnow= TRUE, trials=20 
+- Fold07.Rep1: model=rules, winnow= TRUE, trials=20 
++ Fold08.Rep1: model=tree, winnow=FALSE, trials=20 
+- Fold08.Rep1: model=tree, winnow=FALSE, trials=20 
++ Fold08.Rep1: model=tree, winnow= TRUE, trials=20 
+- Fold08.Rep1: model=tree, winnow= TRUE, trials=20 
++ Fold08.Rep1: model=rules, winnow=FALSE, trials=20 
+- Fold08.Rep1: model=rules, winnow=FALSE, trials=20 
++ Fold08.Rep1: model=rules, winnow= TRUE, trials=20 
+- Fold08.Rep1: model=rules, winnow= TRUE, trials=20 
++ Fold09.Rep1: model=tree, winnow=FALSE, trials=20 
+- Fold09.Rep1: model=tree, winnow=FALSE, trials=20 
++ Fold09.Rep1: model=tree, winnow= TRUE, trials=20 
+- Fold09.Rep1: model=tree, winnow= TRUE, trials=20 
++ Fold09.Rep1: model=rules, winnow=FALSE, trials=20 
+- Fold09.Rep1: model=rules, winnow=FALSE, trials=20 
++ Fold09.Rep1: model=rules, winnow= TRUE, trials=20 
+- Fold09.Rep1: model=rules, winnow= TRUE, trials=20 
++ Fold10.Rep1: model=tree, winnow=FALSE, trials=20 
+- Fold10.Rep1: model=tree, winnow=FALSE, trials=20 
++ Fold10.Rep1: model=tree, winnow= TRUE, trials=20 
+- Fold10.Rep1: model=tree, winnow= TRUE, trials=20 
++ Fold10.Rep1: model=rules, winnow=FALSE, trials=20 
+- Fold10.Rep1: model=rules, winnow=FALSE, trials=20 
++ Fold10.Rep1: model=rules, winnow= TRUE, trials=20 
+- Fold10.Rep1: model=rules, winnow= TRUE, trials=20 
++ Fold01.Rep2: model=tree, winnow=FALSE, trials=20 
+- Fold01.Rep2: model=tree, winnow=FALSE, trials=20 
++ Fold01.Rep2: model=tree, winnow= TRUE, trials=20 
+- Fold01.Rep2: model=tree, winnow= TRUE, trials=20 
++ Fold01.Rep2: model=rules, winnow=FALSE, trials=20 
+- Fold01.Rep2: model=rules, winnow=FALSE, trials=20 
++ Fold01.Rep2: model=rules, winnow= TRUE, trials=20 
+- Fold01.Rep2: model=rules, winnow= TRUE, trials=20 
++ Fold02.Rep2: model=tree, winnow=FALSE, trials=20 
+- Fold02.Rep2: model=tree, winnow=FALSE, trials=20 
++ Fold02.Rep2: model=tree, winnow= TRUE, trials=20 
+- Fold02.Rep2: model=tree, winnow= TRUE, trials=20 
++ Fold02.Rep2: model=rules, winnow=FALSE, trials=20 
+- Fold02.Rep2: model=rules, winnow=FALSE, trials=20 
++ Fold02.Rep2: model=rules, winnow= TRUE, trials=20 
+- Fold02.Rep2: model=rules, winnow= TRUE, trials=20 
++ Fold03.Rep2: model=tree, winnow=FALSE, trials=20 
+- Fold03.Rep2: model=tree, winnow=FALSE, trials=20 
++ Fold03.Rep2: model=tree, winnow= TRUE, trials=20 
+- Fold03.Rep2: model=tree, winnow= TRUE, trials=20 
++ Fold03.Rep2: model=rules, winnow=FALSE, trials=20 
+- Fold03.Rep2: model=rules, winnow=FALSE, trials=20 
++ Fold03.Rep2: model=rules, winnow= TRUE, trials=20 
+- Fold03.Rep2: model=rules, winnow= TRUE, trials=20 
++ Fold04.Rep2: model=tree, winnow=FALSE, trials=20 
+- Fold04.Rep2: model=tree, winnow=FALSE, trials=20 
++ Fold04.Rep2: model=tree, winnow= TRUE, trials=20 
+- Fold04.Rep2: model=tree, winnow= TRUE, trials=20 
++ Fold04.Rep2: model=rules, winnow=FALSE, trials=20 
+- Fold04.Rep2: model=rules, winnow=FALSE, trials=20 
++ Fold04.Rep2: model=rules, winnow= TRUE, trials=20 
+- Fold04.Rep2: model=rules, winnow= TRUE, trials=20 
++ Fold05.Rep2: model=tree, winnow=FALSE, trials=20 
+- Fold05.Rep2: model=tree, winnow=FALSE, trials=20 
++ Fold05.Rep2: model=tree, winnow= TRUE, trials=20 
+- Fold05.Rep2: model=tree, winnow= TRUE, trials=20 
++ Fold05.Rep2: model=rules, winnow=FALSE, trials=20 
+- Fold05.Rep2: model=rules, winnow=FALSE, trials=20 
++ Fold05.Rep2: model=rules, winnow= TRUE, trials=20 
+- Fold05.Rep2: model=rules, winnow= TRUE, trials=20 
++ Fold06.Rep2: model=tree, winnow=FALSE, trials=20 
+- Fold06.Rep2: model=tree, winnow=FALSE, trials=20 
++ Fold06.Rep2: model=tree, winnow= TRUE, trials=20 
+- Fold06.Rep2: model=tree, winnow= TRUE, trials=20 
++ Fold06.Rep2: model=rules, winnow=FALSE, trials=20 
+- Fold06.Rep2: model=rules, winnow=FALSE, trials=20 
++ Fold06.Rep2: model=rules, winnow= TRUE, trials=20 
+- Fold06.Rep2: model=rules, winnow= TRUE, trials=20 
++ Fold07.Rep2: model=tree, winnow=FALSE, trials=20 
+- Fold07.Rep2: model=tree, winnow=FALSE, trials=20 
++ Fold07.Rep2: model=tree, winnow= TRUE, trials=20 
+- Fold07.Rep2: model=tree, winnow= TRUE, trials=20 
++ Fold07.Rep2: model=rules, winnow=FALSE, trials=20 
+- Fold07.Rep2: model=rules, winnow=FALSE, trials=20 
++ Fold07.Rep2: model=rules, winnow= TRUE, trials=20 
+- Fold07.Rep2: model=rules, winnow= TRUE, trials=20 
++ Fold08.Rep2: model=tree, winnow=FALSE, trials=20 
+- Fold08.Rep2: model=tree, winnow=FALSE, trials=20 
++ Fold08.Rep2: model=tree, winnow= TRUE, trials=20 
+- Fold08.Rep2: model=tree, winnow= TRUE, trials=20 
++ Fold08.Rep2: model=rules, winnow=FALSE, trials=20 
+- Fold08.Rep2: model=rules, winnow=FALSE, trials=20 
++ Fold08.Rep2: model=rules, winnow= TRUE, trials=20 
+- Fold08.Rep2: model=rules, winnow= TRUE, trials=20 
++ Fold09.Rep2: model=tree, winnow=FALSE, trials=20 
+- Fold09.Rep2: model=tree, winnow=FALSE, trials=20 
++ Fold09.Rep2: model=tree, winnow= TRUE, trials=20 
+- Fold09.Rep2: model=tree, winnow= TRUE, trials=20 
++ Fold09.Rep2: model=rules, winnow=FALSE, trials=20 
+- Fold09.Rep2: model=rules, winnow=FALSE, trials=20 
++ Fold09.Rep2: model=rules, winnow= TRUE, trials=20 
+- Fold09.Rep2: model=rules, winnow= TRUE, trials=20 
++ Fold10.Rep2: model=tree, winnow=FALSE, trials=20 
+- Fold10.Rep2: model=tree, winnow=FALSE, trials=20 
++ Fold10.Rep2: model=tree, winnow= TRUE, trials=20 
+- Fold10.Rep2: model=tree, winnow= TRUE, trials=20 
++ Fold10.Rep2: model=rules, winnow=FALSE, trials=20 
+- Fold10.Rep2: model=rules, winnow=FALSE, trials=20 
++ Fold10.Rep2: model=rules, winnow= TRUE, trials=20 
+- Fold10.Rep2: model=rules, winnow= TRUE, trials=20 
++ Fold01.Rep3: model=tree, winnow=FALSE, trials=20 
+- Fold01.Rep3: model=tree, winnow=FALSE, trials=20 
++ Fold01.Rep3: model=tree, winnow= TRUE, trials=20 
+- Fold01.Rep3: model=tree, winnow= TRUE, trials=20 
++ Fold01.Rep3: model=rules, winnow=FALSE, trials=20 
+- Fold01.Rep3: model=rules, winnow=FALSE, trials=20 
++ Fold01.Rep3: model=rules, winnow= TRUE, trials=20 
+- Fold01.Rep3: model=rules, winnow= TRUE, trials=20 
++ Fold02.Rep3: model=tree, winnow=FALSE, trials=20 
+- Fold02.Rep3: model=tree, winnow=FALSE, trials=20 
++ Fold02.Rep3: model=tree, winnow= TRUE, trials=20 
+- Fold02.Rep3: model=tree, winnow= TRUE, trials=20 
++ Fold02.Rep3: model=rules, winnow=FALSE, trials=20 
+- Fold02.Rep3: model=rules, winnow=FALSE, trials=20 
++ Fold02.Rep3: model=rules, winnow= TRUE, trials=20 
+- Fold02.Rep3: model=rules, winnow= TRUE, trials=20 
++ Fold03.Rep3: model=tree, winnow=FALSE, trials=20 
+- Fold03.Rep3: model=tree, winnow=FALSE, trials=20 
++ Fold03.Rep3: model=tree, winnow= TRUE, trials=20 
+- Fold03.Rep3: model=tree, winnow= TRUE, trials=20 
++ Fold03.Rep3: model=rules, winnow=FALSE, trials=20 
+- Fold03.Rep3: model=rules, winnow=FALSE, trials=20 
++ Fold03.Rep3: model=rules, winnow= TRUE, trials=20 
+- Fold03.Rep3: model=rules, winnow= TRUE, trials=20 
++ Fold04.Rep3: model=tree, winnow=FALSE, trials=20 
+- Fold04.Rep3: model=tree, winnow=FALSE, trials=20 
++ Fold04.Rep3: model=tree, winnow= TRUE, trials=20 
+- Fold04.Rep3: model=tree, winnow= TRUE, trials=20 
++ Fold04.Rep3: model=rules, winnow=FALSE, trials=20 
+- Fold04.Rep3: model=rules, winnow=FALSE, trials=20 
++ Fold04.Rep3: model=rules, winnow= TRUE, trials=20 
+- Fold04.Rep3: model=rules, winnow= TRUE, trials=20 
++ Fold05.Rep3: model=tree, winnow=FALSE, trials=20 
+- Fold05.Rep3: model=tree, winnow=FALSE, trials=20 
++ Fold05.Rep3: model=tree, winnow= TRUE, trials=20 
+- Fold05.Rep3: model=tree, winnow= TRUE, trials=20 
++ Fold05.Rep3: model=rules, winnow=FALSE, trials=20 
+- Fold05.Rep3: model=rules, winnow=FALSE, trials=20 
++ Fold05.Rep3: model=rules, winnow= TRUE, trials=20 
+- Fold05.Rep3: model=rules, winnow= TRUE, trials=20 
++ Fold06.Rep3: model=tree, winnow=FALSE, trials=20 
+- Fold06.Rep3: model=tree, winnow=FALSE, trials=20 
++ Fold06.Rep3: model=tree, winnow= TRUE, trials=20 
+- Fold06.Rep3: model=tree, winnow= TRUE, trials=20 
++ Fold06.Rep3: model=rules, winnow=FALSE, trials=20 
+- Fold06.Rep3: model=rules, winnow=FALSE, trials=20 
++ Fold06.Rep3: model=rules, winnow= TRUE, trials=20 
+- Fold06.Rep3: model=rules, winnow= TRUE, trials=20 
++ Fold07.Rep3: model=tree, winnow=FALSE, trials=20 
+- Fold07.Rep3: model=tree, winnow=FALSE, trials=20 
++ Fold07.Rep3: model=tree, winnow= TRUE, trials=20 
+- Fold07.Rep3: model=tree, winnow= TRUE, trials=20 
++ Fold07.Rep3: model=rules, winnow=FALSE, trials=20 
+- Fold07.Rep3: model=rules, winnow=FALSE, trials=20 
++ Fold07.Rep3: model=rules, winnow= TRUE, trials=20 
+- Fold07.Rep3: model=rules, winnow= TRUE, trials=20 
++ Fold08.Rep3: model=tree, winnow=FALSE, trials=20 
+- Fold08.Rep3: model=tree, winnow=FALSE, trials=20 
++ Fold08.Rep3: model=tree, winnow= TRUE, trials=20 
+- Fold08.Rep3: model=tree, winnow= TRUE, trials=20 
++ Fold08.Rep3: model=rules, winnow=FALSE, trials=20 
+- Fold08.Rep3: model=rules, winnow=FALSE, trials=20 
++ Fold08.Rep3: model=rules, winnow= TRUE, trials=20 
+- Fold08.Rep3: model=rules, winnow= TRUE, trials=20 
++ Fold09.Rep3: model=tree, winnow=FALSE, trials=20 
+- Fold09.Rep3: model=tree, winnow=FALSE, trials=20 
++ Fold09.Rep3: model=tree, winnow= TRUE, trials=20 
+- Fold09.Rep3: model=tree, winnow= TRUE, trials=20 
++ Fold09.Rep3: model=rules, winnow=FALSE, trials=20 
+- Fold09.Rep3: model=rules, winnow=FALSE, trials=20 
++ Fold09.Rep3: model=rules, winnow= TRUE, trials=20 
+- Fold09.Rep3: model=rules, winnow= TRUE, trials=20 
++ Fold10.Rep3: model=tree, winnow=FALSE, trials=20 
+- Fold10.Rep3: model=tree, winnow=FALSE, trials=20 
++ Fold10.Rep3: model=tree, winnow= TRUE, trials=20 
+- Fold10.Rep3: model=tree, winnow= TRUE, trials=20 
++ Fold10.Rep3: model=rules, winnow=FALSE, trials=20 
+- Fold10.Rep3: model=rules, winnow=FALSE, trials=20 
++ Fold10.Rep3: model=rules, winnow= TRUE, trials=20 
+- Fold10.Rep3: model=rules, winnow= TRUE, trials=20 
+Aggregating results
+Selecting tuning parameters
+Fitting trials = 20, model = tree, winnow = TRUE on full training set
+
+> saveRDS(fit_c5_rf, './models/C5.0_full.rds')
+png 
+  4 
+png 
+  4 
+$C5.0
+C5.0 
+
+9898 samples
+  37 predictor
+   2 classes: 'Acer', 'Sony' 
+
+No pre-processing
+Resampling: Bootstrapped (30 reps) 
+Summary of sample sizes: 8907, 8907, 8909, 8909, 8909, 8909, ... 
+Resampling results across tuning parameters:
+
+  model  winnow  trials  ROC        Sens       Spec     
+  rules  FALSE    1      0.8429648  0.9318008  0.7461803
+  rules  FALSE   10      0.9800503  0.8830980  0.9433420
+  rules  FALSE   20      0.9797961  0.8947624  0.9400916
+  rules   TRUE    1      0.8465862  0.9324185  0.7520892
+  rules   TRUE   10      0.9800118  0.8862184  0.9438832
+  rules   TRUE   20      0.9800117  0.8925331  0.9396573
+  tree   FALSE    1      0.9072533  0.9315335  0.7462345
+  tree   FALSE   10      0.9803014  0.8923584  0.9394962
+  tree   FALSE   20      0.9805039  0.9020616  0.9353795
+  tree    TRUE    1      0.9092911  0.9322403  0.7521434
+  tree    TRUE   10      0.9804467  0.8915603  0.9403085
+  tree    TRUE   20      0.9803940  0.9053554  0.9330488
+
+ROC was used to select the optimal model using the largest value.
+The final values used for the model were trials = 20, model = tree and winnow = FALSE.
+
+$ranger
+Random Forest 
+
+9898 samples
+  37 predictor
+   2 classes: 'Acer', 'Sony' 
+
+No pre-processing
+Resampling: Bootstrapped (30 reps) 
+Summary of sample sizes: 8907, 8907, 8909, 8909, 8909, 8909, ... 
+Resampling results across tuning parameters:
+
+  mtry  splitrule   ROC        Sens         Spec     
+   2    gini        0.8733299  0.004629828  0.9997834
+   2    extratrees  0.8177883  0.000000000  1.0000000
+  19    gini        0.9794111  0.900465597  0.9341323
+  19    extratrees  0.9778634  0.895922044  0.9354875
+  37    gini        0.9791229  0.892450386  0.9298538
+  37    extratrees  0.9801172  0.897433630  0.9360820
+
+Tuning parameter 'min.node.size' was held constant at a value of 1
+ROC was used to select the optimal model using the largest value.
+The final values used for the model were mtry = 37, splitrule = extratrees and min.node.size = 1.
+
+attr(,"class")
+[1] "caretList"
++ Fold01.Rep1: model=tree, winnow=FALSE, trials=20 
+- Fold01.Rep1: model=tree, winnow=FALSE, trials=20 
++ Fold01.Rep1: model=tree, winnow= TRUE, trials=20 
+- Fold01.Rep1: model=tree, winnow= TRUE, trials=20 
++ Fold01.Rep1: model=rules, winnow=FALSE, trials=20 
+- Fold01.Rep1: model=rules, winnow=FALSE, trials=20 
++ Fold01.Rep1: model=rules, winnow= TRUE, trials=20 
+- Fold01.Rep1: model=rules, winnow= TRUE, trials=20 
++ Fold02.Rep1: model=tree, winnow=FALSE, trials=20 
+- Fold02.Rep1: model=tree, winnow=FALSE, trials=20 
++ Fold02.Rep1: model=tree, winnow= TRUE, trials=20 
+- Fold02.Rep1: model=tree, winnow= TRUE, trials=20 
++ Fold02.Rep1: model=rules, winnow=FALSE, trials=20 
+- Fold02.Rep1: model=rules, winnow=FALSE, trials=20 
++ Fold02.Rep1: model=rules, winnow= TRUE, trials=20 
+- Fold02.Rep1: model=rules, winnow= TRUE, trials=20 
++ Fold03.Rep1: model=tree, winnow=FALSE, trials=20 
+- Fold03.Rep1: model=tree, winnow=FALSE, trials=20 
++ Fold03.Rep1: model=tree, winnow= TRUE, trials=20 
+- Fold03.Rep1: model=tree, winnow= TRUE, trials=20 
++ Fold03.Rep1: model=rules, winnow=FALSE, trials=20 
+- Fold03.Rep1: model=rules, winnow=FALSE, trials=20 
++ Fold03.Rep1: model=rules, winnow= TRUE, trials=20 
+- Fold03.Rep1: model=rules, winnow= TRUE, trials=20 
++ Fold04.Rep1: model=tree, winnow=FALSE, trials=20 
+
+> library(dplyr)
+
+> library(readr)
+
+> library(tidyr)
+
+> library(caret)
+
+> library(caTools)
+
+> library(caretEnsemble)
+
+> data_train <- read.csv('./data/processed/processed_train.csv')
+
+> data_test <- read.csv('./data/processed/processed_test.csv')
+
+> data_pred <- read.csv('./data/processed/processed_pred.csv')
+
+> data_clean <- read.csv('./data/clean/clean_train_predict.csv')
+
+> # combining the train data
+> data <- bind_rows(data_train, data_test)
+
+> # splitting the cleaned data
+> data_clean_missing <- filter(data_clean, predict == 1)
+
+> data_clean_nomissing <- filter(data_clean, predict == 0)
+
+> # Create custom indices
+> my_folds <- createMultiFolds(y = data$brand, k = 10, times = 3)
+
+> # Create reusable trainControl object: myControl
+> fitControl <- trainControl(
++     summaryFunction = twoClassSummary,
++     classProbs = TRUE,
++   .... [TRUNCATED] 
+
+> target <- 'brand'
+
+> predictors <- names(data)[!names(data) %in% target]
+
+> fit_c5 <- train(
++     data[, predictors],
++     data[, target],
++     trControl = fitControl,
++     method = 'C5.0',
++     metric = 'ROC'
++ ) 
++ Fold01.Rep1: model=tree, winnow=FALSE, trials=20 
+- Fold01.Rep1: model=tree, winnow=FALSE, trials=20 
++ Fold01.Rep1: model=tree, winnow= TRUE, trials=20 
+- Fold01.Rep1: model=tree, winnow= TRUE, trials=20 
++ Fold01.Rep1: model=rules, winnow=FALSE, trials=20 
+- Fold01.Rep1: model=rules, winnow=FALSE, trials=20 
++ Fold01.Rep1: model=rules, winnow= TRUE, trials=20 
+- Fold01.Rep1: model=rules, winnow= TRUE, trials=20 
++ Fold02.Rep1: model=tree, winnow=FALSE, trials=20 
+- Fold02.Rep1: model=tree, winnow=FALSE, trials=20 
++ Fold02.Rep1: model=tree, winnow= TRUE, trials=20 
+- Fold02.Rep1: model=tree, winnow= TRUE, trials=20 
++ Fold02.Rep1: model=rules, winnow=FALSE, trials=20 
+- Fold02.Rep1: model=rules, winnow=FALSE, trials=20 
++ Fold02.Rep1: model=rules, winnow= TRUE, trials=20 
+- Fold02.Rep1: model=rules, winnow= TRUE, trials=20 
++ Fold03.Rep1: model=tree, winnow=FALSE, trials=20 
+- Fold03.Rep1: model=tree, winnow=FALSE, trials=20 
++ Fold03.Rep1: model=tree, winnow= TRUE, trials=20 
+- Fold03.Rep1: model=tree, winnow= TRUE, trials=20 
++ Fold03.Rep1: model=rules, winnow=FALSE, trials=20 
+- Fold03.Rep1: model=rules, winnow=FALSE, trials=20 
++ Fold03.Rep1: model=rules, winnow= TRUE, trials=20 
+- Fold03.Rep1: model=rules, winnow= TRUE, trials=20 
++ Fold04.Rep1: model=tree, winnow=FALSE, trials=20 
+- Fold04.Rep1: model=tree, winnow=FALSE, trials=20 
++ Fold04.Rep1: model=tree, winnow= TRUE, trials=20 
+- Fold04.Rep1: model=tree, winnow= TRUE, trials=20 
++ Fold04.Rep1: model=rules, winnow=FALSE, trials=20 
+- Fold04.Rep1: model=rules, winnow=FALSE, trials=20 
++ Fold04.Rep1: model=rules, winnow= TRUE, trials=20 
+- Fold04.Rep1: model=rules, winnow= TRUE, trials=20 
++ Fold05.Rep1: model=tree, winnow=FALSE, trials=20 
+- Fold05.Rep1: model=tree, winnow=FALSE, trials=20 
++ Fold05.Rep1: model=tree, winnow= TRUE, trials=20 
+- Fold05.Rep1: model=tree, winnow= TRUE, trials=20 
++ Fold05.Rep1: model=rules, winnow=FALSE, trials=20 
+- Fold05.Rep1: model=rules, winnow=FALSE, trials=20 
++ Fold05.Rep1: model=rules, winnow= TRUE, trials=20 
+- Fold05.Rep1: model=rules, winnow= TRUE, trials=20 
++ Fold06.Rep1: model=tree, winnow=FALSE, trials=20 
+- Fold06.Rep1: model=tree, winnow=FALSE, trials=20 
++ Fold06.Rep1: model=tree, winnow= TRUE, trials=20 
+- Fold06.Rep1: model=tree, winnow= TRUE, trials=20 
++ Fold06.Rep1: model=rules, winnow=FALSE, trials=20 
+- Fold06.Rep1: model=rules, winnow=FALSE, trials=20 
++ Fold06.Rep1: model=rules, winnow= TRUE, trials=20 
+- Fold06.Rep1: model=rules, winnow= TRUE, trials=20 
++ Fold07.Rep1: model=tree, winnow=FALSE, trials=20 
+- Fold07.Rep1: model=tree, winnow=FALSE, trials=20 
++ Fold07.Rep1: model=tree, winnow= TRUE, trials=20 
+- Fold07.Rep1: model=tree, winnow= TRUE, trials=20 
++ Fold07.Rep1: model=rules, winnow=FALSE, trials=20 
+- Fold07.Rep1: model=rules, winnow=FALSE, trials=20 
++ Fold07.Rep1: model=rules, winnow= TRUE, trials=20 
+- Fold07.Rep1: model=rules, winnow= TRUE, trials=20 
++ Fold08.Rep1: model=tree, winnow=FALSE, trials=20 
+- Fold08.Rep1: model=tree, winnow=FALSE, trials=20 
++ Fold08.Rep1: model=tree, winnow= TRUE, trials=20 
+- Fold08.Rep1: model=tree, winnow= TRUE, trials=20 
++ Fold08.Rep1: model=rules, winnow=FALSE, trials=20 
+- Fold08.Rep1: model=rules, winnow=FALSE, trials=20 
++ Fold08.Rep1: model=rules, winnow= TRUE, trials=20 
+- Fold08.Rep1: model=rules, winnow= TRUE, trials=20 
++ Fold09.Rep1: model=tree, winnow=FALSE, trials=20 
+- Fold09.Rep1: model=tree, winnow=FALSE, trials=20 
++ Fold09.Rep1: model=tree, winnow= TRUE, trials=20 
+- Fold09.Rep1: model=tree, winnow= TRUE, trials=20 
++ Fold09.Rep1: model=rules, winnow=FALSE, trials=20 
+- Fold09.Rep1: model=rules, winnow=FALSE, trials=20 
++ Fold09.Rep1: model=rules, winnow= TRUE, trials=20 
+- Fold09.Rep1: model=rules, winnow= TRUE, trials=20 
++ Fold10.Rep1: model=tree, winnow=FALSE, trials=20 
+- Fold10.Rep1: model=tree, winnow=FALSE, trials=20 
++ Fold10.Rep1: model=tree, winnow= TRUE, trials=20 
+- Fold10.Rep1: model=tree, winnow= TRUE, trials=20 
++ Fold10.Rep1: model=rules, winnow=FALSE, trials=20 
+- Fold10.Rep1: model=rules, winnow=FALSE, trials=20 
++ Fold10.Rep1: model=rules, winnow= TRUE, trials=20 
+- Fold10.Rep1: model=rules, winnow= TRUE, trials=20 
++ Fold01.Rep2: model=tree, winnow=FALSE, trials=20 
+- Fold01.Rep2: model=tree, winnow=FALSE, trials=20 
++ Fold01.Rep2: model=tree, winnow= TRUE, trials=20 
+- Fold01.Rep2: model=tree, winnow= TRUE, trials=20 
++ Fold01.Rep2: model=rules, winnow=FALSE, trials=20 
+- Fold01.Rep2: model=rules, winnow=FALSE, trials=20 
++ Fold01.Rep2: model=rules, winnow= TRUE, trials=20 
+- Fold01.Rep2: model=rules, winnow= TRUE, trials=20 
++ Fold02.Rep2: model=tree, winnow=FALSE, trials=20 
+- Fold02.Rep2: model=tree, winnow=FALSE, trials=20 
++ Fold02.Rep2: model=tree, winnow= TRUE, trials=20 
+- Fold02.Rep2: model=tree, winnow= TRUE, trials=20 
++ Fold02.Rep2: model=rules, winnow=FALSE, trials=20 
+- Fold02.Rep2: model=rules, winnow=FALSE, trials=20 
++ Fold02.Rep2: model=rules, winnow= TRUE, trials=20 
+- Fold02.Rep2: model=rules, winnow= TRUE, trials=20 
++ Fold03.Rep2: model=tree, winnow=FALSE, trials=20 
+- Fold03.Rep2: model=tree, winnow=FALSE, trials=20 
++ Fold03.Rep2: model=tree, winnow= TRUE, trials=20 
+- Fold03.Rep2: model=tree, winnow= TRUE, trials=20 
++ Fold03.Rep2: model=rules, winnow=FALSE, trials=20 
+- Fold03.Rep2: model=rules, winnow=FALSE, trials=20 
++ Fold03.Rep2: model=rules, winnow= TRUE, trials=20 
+- Fold03.Rep2: model=rules, winnow= TRUE, trials=20 
++ Fold04.Rep2: model=tree, winnow=FALSE, trials=20 
+- Fold04.Rep2: model=tree, winnow=FALSE, trials=20 
++ Fold04.Rep2: model=tree, winnow= TRUE, trials=20 
+- Fold04.Rep2: model=tree, winnow= TRUE, trials=20 
++ Fold04.Rep2: model=rules, winnow=FALSE, trials=20 
+- Fold04.Rep2: model=rules, winnow=FALSE, trials=20 
++ Fold04.Rep2: model=rules, winnow= TRUE, trials=20 
+- Fold04.Rep2: model=rules, winnow= TRUE, trials=20 
++ Fold05.Rep2: model=tree, winnow=FALSE, trials=20 
+- Fold05.Rep2: model=tree, winnow=FALSE, trials=20 
++ Fold05.Rep2: model=tree, winnow= TRUE, trials=20 
+- Fold05.Rep2: model=tree, winnow= TRUE, trials=20 
++ Fold05.Rep2: model=rules, winnow=FALSE, trials=20 
+- Fold05.Rep2: model=rules, winnow=FALSE, trials=20 
++ Fold05.Rep2: model=rules, winnow= TRUE, trials=20 
+- Fold05.Rep2: model=rules, winnow= TRUE, trials=20 
++ Fold06.Rep2: model=tree, winnow=FALSE, trials=20 
+- Fold06.Rep2: model=tree, winnow=FALSE, trials=20 
++ Fold06.Rep2: model=tree, winnow= TRUE, trials=20 
+- Fold06.Rep2: model=tree, winnow= TRUE, trials=20 
++ Fold06.Rep2: model=rules, winnow=FALSE, trials=20 
+- Fold06.Rep2: model=rules, winnow=FALSE, trials=20 
++ Fold06.Rep2: model=rules, winnow= TRUE, trials=20 
+- Fold06.Rep2: model=rules, winnow= TRUE, trials=20 
++ Fold07.Rep2: model=tree, winnow=FALSE, trials=20 
+- Fold07.Rep2: model=tree, winnow=FALSE, trials=20 
++ Fold07.Rep2: model=tree, winnow= TRUE, trials=20 
+- Fold07.Rep2: model=tree, winnow= TRUE, trials=20 
++ Fold07.Rep2: model=rules, winnow=FALSE, trials=20 
+- Fold07.Rep2: model=rules, winnow=FALSE, trials=20 
++ Fold07.Rep2: model=rules, winnow= TRUE, trials=20 
+- Fold07.Rep2: model=rules, winnow= TRUE, trials=20 
++ Fold08.Rep2: model=tree, winnow=FALSE, trials=20 
+- Fold08.Rep2: model=tree, winnow=FALSE, trials=20 
++ Fold08.Rep2: model=tree, winnow= TRUE, trials=20 
+- Fold08.Rep2: model=tree, winnow= TRUE, trials=20 
++ Fold08.Rep2: model=rules, winnow=FALSE, trials=20 
+- Fold08.Rep2: model=rules, winnow=FALSE, trials=20 
++ Fold08.Rep2: model=rules, winnow= TRUE, trials=20 
+- Fold08.Rep2: model=rules, winnow= TRUE, trials=20 
++ Fold09.Rep2: model=tree, winnow=FALSE, trials=20 
+- Fold09.Rep2: model=tree, winnow=FALSE, trials=20 
++ Fold09.Rep2: model=tree, winnow= TRUE, trials=20 
+- Fold09.Rep2: model=tree, winnow= TRUE, trials=20 
++ Fold09.Rep2: model=rules, winnow=FALSE, trials=20 
+- Fold09.Rep2: model=rules, winnow=FALSE, trials=20 
++ Fold09.Rep2: model=rules, winnow= TRUE, trials=20 
+- Fold09.Rep2: model=rules, winnow= TRUE, trials=20 
++ Fold10.Rep2: model=tree, winnow=FALSE, trials=20 
+- Fold10.Rep2: model=tree, winnow=FALSE, trials=20 
++ Fold10.Rep2: model=tree, winnow= TRUE, trials=20 
+- Fold10.Rep2: model=tree, winnow= TRUE, trials=20 
++ Fold10.Rep2: model=rules, winnow=FALSE, trials=20 
+- Fold10.Rep2: model=rules, winnow=FALSE, trials=20 
++ Fold10.Rep2: model=rules, winnow= TRUE, trials=20 
+- Fold10.Rep2: model=rules, winnow= TRUE, trials=20 
++ Fold01.Rep3: model=tree, winnow=FALSE, trials=20 
+- Fold01.Rep3: model=tree, winnow=FALSE, trials=20 
++ Fold01.Rep3: model=tree, winnow= TRUE, trials=20 
+- Fold01.Rep3: model=tree, winnow= TRUE, trials=20 
++ Fold01.Rep3: model=rules, winnow=FALSE, trials=20 
+- Fold01.Rep3: model=rules, winnow=FALSE, trials=20 
++ Fold01.Rep3: model=rules, winnow= TRUE, trials=20 
+- Fold01.Rep3: model=rules, winnow= TRUE, trials=20 
++ Fold02.Rep3: model=tree, winnow=FALSE, trials=20 
+- Fold02.Rep3: model=tree, winnow=FALSE, trials=20 
++ Fold02.Rep3: model=tree, winnow= TRUE, trials=20 
+- Fold02.Rep3: model=tree, winnow= TRUE, trials=20 
++ Fold02.Rep3: model=rules, winnow=FALSE, trials=20 
+- Fold02.Rep3: model=rules, winnow=FALSE, trials=20 
++ Fold02.Rep3: model=rules, winnow= TRUE, trials=20 
+- Fold02.Rep3: model=rules, winnow= TRUE, trials=20 
++ Fold03.Rep3: model=tree, winnow=FALSE, trials=20 
+- Fold03.Rep3: model=tree, winnow=FALSE, trials=20 
++ Fold03.Rep3: model=tree, winnow= TRUE, trials=20 
+- Fold03.Rep3: model=tree, winnow= TRUE, trials=20 
++ Fold03.Rep3: model=rules, winnow=FALSE, trials=20 
+- Fold03.Rep3: model=rules, winnow=FALSE, trials=20 
++ Fold03.Rep3: model=rules, winnow= TRUE, trials=20 
+- Fold03.Rep3: model=rules, winnow= TRUE, trials=20 
++ Fold04.Rep3: model=tree, winnow=FALSE, trials=20 
+- Fold04.Rep3: model=tree, winnow=FALSE, trials=20 
++ Fold04.Rep3: model=tree, winnow= TRUE, trials=20 
+- Fold04.Rep3: model=tree, winnow= TRUE, trials=20 
++ Fold04.Rep3: model=rules, winnow=FALSE, trials=20 
+- Fold04.Rep3: model=rules, winnow=FALSE, trials=20 
++ Fold04.Rep3: model=rules, winnow= TRUE, trials=20 
+- Fold04.Rep3: model=rules, winnow= TRUE, trials=20 
++ Fold05.Rep3: model=tree, winnow=FALSE, trials=20 
+- Fold05.Rep3: model=tree, winnow=FALSE, trials=20 
++ Fold05.Rep3: model=tree, winnow= TRUE, trials=20 
+- Fold05.Rep3: model=tree, winnow= TRUE, trials=20 
++ Fold05.Rep3: model=rules, winnow=FALSE, trials=20 
+- Fold05.Rep3: model=rules, winnow=FALSE, trials=20 
++ Fold05.Rep3: model=rules, winnow= TRUE, trials=20 
+- Fold05.Rep3: model=rules, winnow= TRUE, trials=20 
++ Fold06.Rep3: model=tree, winnow=FALSE, trials=20 
+- Fold06.Rep3: model=tree, winnow=FALSE, trials=20 
++ Fold06.Rep3: model=tree, winnow= TRUE, trials=20 
+- Fold06.Rep3: model=tree, winnow= TRUE, trials=20 
++ Fold06.Rep3: model=rules, winnow=FALSE, trials=20 
+- Fold06.Rep3: model=rules, winnow=FALSE, trials=20 
++ Fold06.Rep3: model=rules, winnow= TRUE, trials=20 
+- Fold06.Rep3: model=rules, winnow= TRUE, trials=20 
++ Fold07.Rep3: model=tree, winnow=FALSE, trials=20 
+- Fold07.Rep3: model=tree, winnow=FALSE, trials=20 
++ Fold07.Rep3: model=tree, winnow= TRUE, trials=20 
+- Fold07.Rep3: model=tree, winnow= TRUE, trials=20 
++ Fold07.Rep3: model=rules, winnow=FALSE, trials=20 
+- Fold07.Rep3: model=rules, winnow=FALSE, trials=20 
++ Fold07.Rep3: model=rules, winnow= TRUE, trials=20 
+- Fold07.Rep3: model=rules, winnow= TRUE, trials=20 
++ Fold08.Rep3: model=tree, winnow=FALSE, trials=20 
+- Fold08.Rep3: model=tree, winnow=FALSE, trials=20 
++ Fold08.Rep3: model=tree, winnow= TRUE, trials=20 
+- Fold08.Rep3: model=tree, winnow= TRUE, trials=20 
++ Fold08.Rep3: model=rules, winnow=FALSE, trials=20 
+- Fold08.Rep3: model=rules, winnow=FALSE, trials=20 
++ Fold08.Rep3: model=rules, winnow= TRUE, trials=20 
+- Fold08.Rep3: model=rules, winnow= TRUE, trials=20 
++ Fold09.Rep3: model=tree, winnow=FALSE, trials=20 
+- Fold09.Rep3: model=tree, winnow=FALSE, trials=20 
++ Fold09.Rep3: model=tree, winnow= TRUE, trials=20 
+- Fold09.Rep3: model=tree, winnow= TRUE, trials=20 
++ Fold09.Rep3: model=rules, winnow=FALSE, trials=20 
+- Fold09.Rep3: model=rules, winnow=FALSE, trials=20 
++ Fold09.Rep3: model=rules, winnow= TRUE, trials=20 
+- Fold09.Rep3: model=rules, winnow= TRUE, trials=20 
++ Fold10.Rep3: model=tree, winnow=FALSE, trials=20 
+- Fold10.Rep3: model=tree, winnow=FALSE, trials=20 
++ Fold10.Rep3: model=tree, winnow= TRUE, trials=20 
+- Fold10.Rep3: model=tree, winnow= TRUE, trials=20 
++ Fold10.Rep3: model=rules, winnow=FALSE, trials=20 
+- Fold10.Rep3: model=rules, winnow=FALSE, trials=20 
++ Fold10.Rep3: model=rules, winnow= TRUE, trials=20 
+- Fold10.Rep3: model=rules, winnow= TRUE, trials=20 
+Aggregating results
+Selecting tuning parameters
+Fitting trials = 10, model = rules, winnow = TRUE on full training set
+
+> saveRDS(fit_c5, './models/C5.0_full.rds')
+
+> library(dplyr)
+
+> library(readr)
+
+> library(tidyr)
+
+> library(caret)
+
+> library(caretEnsemble)
+
+> best_model_path <- './models/C5.0_full.rds'
+
+> data_train <- read.csv('./data/processed/processed_train.csv')
+
+> data_test <- read.csv('./data/processed/processed_test.csv')
+
+> data_pred <- read.csv('./data/processed/processed_pred.csv')
+
+> data_clean <- read.csv('./data/clean/clean_train_predict.csv')
+
+> # combining the train data
+> data <- bind_rows(data_train, data_test)
+
+> # splitting the cleaned data
+> data_clean_missing <- filter(data_clean, predict == 1)
+
+> data_clean_nomissing <- filter(data_clean, predict == 0)
+
+> # Loading the model
+> best_model <- readRDS(best_model_path)
+
+> best_predictions <-
++     predict(best_model, newdata = data_pred)
+
+> data_clean_missing$brand = best_predictions
+
+> data_fixed <- bind_rows(data_clean_missing, data_clean_nomissing)
+
+> write.csv(data_fixed, file='./data/fixed/data_nomissing.csv', row.names = FALSE)
+png 
+  4 
+png 
+  4 
+png 
+  4 
+png 
+  4 
+png 
+  5 
+png 
+  5 
+png 
+  5 
+png 
+  2 
+png 
+  2 
+png 
+  3 
+png 
+  3 
+png 
+  3 
+png 
+  3 
+png 
+  4 
+png 
+  4 
+png 
+  4 
+png 
+  5 
+png 
+  5 
