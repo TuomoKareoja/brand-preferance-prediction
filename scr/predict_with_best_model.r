@@ -25,3 +25,8 @@ best_predictions <-
 data_clean_missing$brand = best_predictions
 data_fixed <- bind_rows(data_clean_missing, data_clean_nomissing)
 write.csv(data_fixed, file='./data/fixed/data_nomissing.csv', row.names = FALSE)
+
+# Saving also the pure predictions in a csv 
+best_bredictions_df <- as.data.frame(best_predictions)
+colnames(best_bredictions_df) <- 'prediction'
+write.csv(best_predictions, file='./data/fixed/just_predictions.csv', row.names = FALSE)

@@ -57,7 +57,7 @@ lines(egb_rocit$TPR ~ egb_rocit$FPR, col=4, lwd=2)
 legend('bottomright', col = c(1,2,4), c('RF', 'C5.0', 'EGB'), lwd=2)
 dev.off()
 
-# plotting confusion matrices 
+# plotting confusion matrices
 predictions_c5_classes <-
     predict(model_c5, newdata = data_test)
 predictions_egb_classes <-
@@ -81,7 +81,7 @@ cm_egb_train <- confusionMatrix(predictions_egb_classes_train, data_train$brand)
 cm_rf_train <- confusionMatrix(predictions_rf_classes_train, data_train$brand)
 
 png(filename='./figures/cm_c5.png')
-cm_c5_plot <- draw_confusion_plot(cm_c5, title='C5.0 Confusion Matrix: Test') 
+cm_c5_plot <- draw_confusion_plot(cm_c5, title='C5.0 Confusion Matrix: Test')
 dev.off()
 png(filename='./figures/cm_egb.png')
 cm_egb_plot <- draw_confusion_plot(cm_egb, title='EGB Confusion Matrix: Test')
@@ -89,7 +89,7 @@ dev.off()
 png(filename='./figures/cm_rf.png')
 cm_rf_plot <- draw_confusion_plot(cm_rf, title='RF Confusion Matrix: Test')
 dev.off()
-png(filename='./figures/cm_c5_train.png') 
+png(filename='./figures/cm_c5_train.png')
 cm_c5_train_plot <- draw_confusion_plot(cm_c5_train, title='C5.0 Confusion Matrix: Train')
 dev.off()
 png(filename='./figures/cm_egb_train.png')
@@ -101,28 +101,28 @@ dev.off()
 
 # Model correlations are low there ensembling is a good idea
 modelCor(cv_results)
-splom(cv_results)
 png(filename='./figures/model_prediction_correlations.png')
+splom(cv_results)
 dev.off()
 
 # Model variable importance
-png(filename='./figures/c5_feature_importance.png') 
+png(filename='./figures/c5_feature_importance.png')
 plot(varImp(model_c5, useModel = FALSE), top = 15)
 dev.off()
-png(filename='./figures/egb_feature_importance.png') 
+png(filename='./figures/egb_feature_importance.png')
 plot(varImp(model_egb, useModel = FALSE), top = 15)
 dev.off()
-png(filename='./figures/rf_feature_importance.png') 
+png(filename='./figures/rf_feature_importance.png')
 plot(varImp(model_rf, useModel = FALSE), top = 15)
 dev.off()
-png(filename='./figures/c5_full_feature_importance.png') 
+png(filename='./figures/c5_full_feature_importance.png')
 plot(varImp(model_c5_full, useModel = FALSE), top = 15)
 dev.off()
 
 # Salary is in all models the most important predictor
 # Lets draw the distribution of wage and brand preference with the full data
 data_full <- bind_rows(data_train, data_test)
-png(filename='./figures/brand_salary_distribution.png') 
+png(filename='./figures/brand_salary_distribution.png')
 ggplot(data_full, aes(x=salary, color=brand, group=brand)) +
     geom_freqpoly(data=subset(data_full, brand=='Sony'), bins=60, aes(y=(..count..)/sum(..count..))) +
     geom_freqpoly(data=subset(data_full, brand=='Acer'), bins=60, aes(y=(..count..)/sum(..count..))) +
